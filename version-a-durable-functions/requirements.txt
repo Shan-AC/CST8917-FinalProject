@@ -1,0 +1,4 @@
+azure-functions==1.25.0
+azure-functions-durable==1.4.0
+sendgrid==6.12.5
+

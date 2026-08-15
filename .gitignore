@@ -1,0 +1,31 @@
+# Azure Functions local secrets
+local.settings.json
+**/local.settings.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Azure Functions build output
+.python_packages/
+bin/
+obj/
+
+# Editors and operating systems
+.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Recording files are submitted through YouTube, not GitHub
+*.mp4
+*.mov
+
+# Local runtime files - never commit
+**/.venv/
+**/local.settings.json
+**/azurite-data/
+**/azurite-debug.log

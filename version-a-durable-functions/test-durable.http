@@ -1,0 +1,90 @@
+@baseUrl = http://localhost:7071/api
+@instanceId = PASTE_INSTANCE_ID_FROM_START_RESPONSE_HERE
+
+### 1. Valid expense under $100 - expected: approved automatically
+POST {{baseUrl}}/expenses/start
+Content-Type: application/json
+
+{
+  "employee_name": "Shan Jiang",
+  "employee_email": "REPLACE_WITH_YOUR_EMAIL",
+  "amount": 75.50,
+  "category": "meals",
+  "description": "Team lunch",
+  "manager_email": "REPLACE_WITH_MANAGER_EMAIL",
+  "timeout_seconds": 120
+}
+
+### 2. Start expense >= $100, then copy its instanceId into @instanceId
+POST {{baseUrl}}/expenses/start
+Content-Type: application/json
+
+{
+  "employee_name": "Shan Jiang",
+  "employee_email": "REPLACE_WITH_YOUR_EMAIL",
+  "amount": 250.00,
+  "category": "equipment",
+  "description": "External monitor",
+  "manager_email": "REPLACE_WITH_MANAGER_EMAIL",
+  "timeout_seconds": 120
+}
+
+### 2A. Manager approves - expected: approved
+POST {{baseUrl}}/expenses/{{instanceId}}/decision
+Content-Type: application/json
+
+{
+  "decision": "approve",
+  "comment": "The equipment is required for the project."
+}
+
+### 3. Manager rejects - start a new >= $100 request, update @instanceId, then run this
+POST {{baseUrl}}/expenses/{{instanceId}}/decision
+Content-Type: application/json
+
+{
+  "decision": "reject",
+  "comment": "The expense is outside the current budget."
+}
+
+### 4. No manager response - start this and wait about 30 seconds; expected: escalated
+POST {{baseUrl}}/expenses/start
+Content-Type: application/json
+
+{
+  "employee_name": "Shan Jiang",
+  "employee_email": "REPLACE_WITH_YOUR_EMAIL",
+  "amount": 180.00,
+  "category": "software",
+  "description": "One-year design tool licence",
+  "manager_email": "REPLACE_WITH_MANAGER_EMAIL",
+  "timeout_seconds": 30
+}
+
+### 5. Missing required fields - expected: validation_error
+POST {{baseUrl}}/expenses/start
+Content-Type: application/json
+
+{
+  "employee_name": "Shan Jiang",
+  "employee_email": "REPLACE_WITH_YOUR_EMAIL",
+  "amount": 45.00,
+  "category": "travel"
+}
+
+### 6. Invalid category - expected: validation_error
+POST {{baseUrl}}/expenses/start
+Content-Type: application/json
+
+{
+  "employee_name": "Shan Jiang",
+  "employee_email": "REPLACE_WITH_YOUR_EMAIL",
+  "amount": 45.00,
+  "category": "coffee",
+  "description": "Coffee beans",
+  "manager_email": "REPLACE_WITH_MANAGER_EMAIL"
+}
+
+### Check a specific instance after copying the statusQueryGetUri from the start response
+GET PASTE_STATUS_QUERY_GET_URI_HERE
+

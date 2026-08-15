@@ -1,0 +1,25 @@
+{
+  "$note": "Reference outline only. Build and authenticate the connectors in the Azure Logic Apps designer, then export the real workflow definition from your own resource.",
+  "trigger": "When a message is received in expense-requests (peek-lock)",
+  "actions": [
+    "Parse JSON from the Service Bus message",
+    "HTTP POST to the validate-expense Azure Function",
+    "Condition: validation body valid equals true",
+    "If invalid: set status=rejected and reason=validation_error",
+    "If valid and amount is less than 100: set status=approved",
+    "If valid and amount is 100 or more: Send approval email to manager",
+    "Approval action timeout for demo: PT2M",
+    "If manager approves: set status=approved",
+    "If manager rejects: set status=rejected",
+    "If approval times out: run Escalated scope and set status=escalated",
+    "Send message to expense-outcomes topic with application property status",
+    "Send outcome email to employee",
+    "Complete the original Service Bus queue message"
+  ],
+  "subscription_filters": {
+    "approved-subscription": "status = 'approved'",
+    "rejected-subscription": "status = 'rejected'",
+    "escalated-subscription": "status = 'escalated'"
+  }
+}
+

@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "SERVICE_BUS_CONNECTION": "Endpoint=sb://REPLACE.servicebus.windows.net/;SharedAccessKeyName=REPLACE;SharedAccessKey=REPLACE",
+    "EXPENSE_QUEUE_NAME": "expense-requests"
+  }
+}
+

@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "APPROVAL_TIMEOUT_SECONDS": "120",
+    "EMAIL_MODE": "console",
+    "SENDGRID_API_KEY": "REPLACE_WITH_KEY_AND_NEVER_COMMIT_THE_REAL_VALUE",
+    "SENDGRID_FROM_EMAIL": "verified-sender@example.com"
+  }
+}
+
