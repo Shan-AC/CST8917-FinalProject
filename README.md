@@ -24,16 +24,22 @@ The final outcome is published to the `expense-outcomes` topic with a `status` a
 
 ## Test Results
 
-All six scenarios were tested successfully in both implementations. Version A was tested locally with Azure Functions Core Tools and Azurite. Version B was tested through the deployed Azure Function, Azure Service Bus, and Azure Logic App.
+| Scenario | Version A Evidence | Version B Evidence |
+|---|---|---|
+| Under $100 | Pass — [A2: Completed and Approved](version-a-durable-functions/screenshots/A2-completed-approved.png) | Pass — [B4: Auto-Approved Run](version-b-logic-apps/screenshots/B4-auto-approved-run.png) |
+| Manager approves | Pass — [A5: Manager Approved](version-a-durable-functions/screenshots/A5-manager-approved.png) | Pass — [B5: Manager-Approved Run](version-b-logic-apps/screenshots/B5-manager-approved-ru.png) |
+| Manager rejects | Pass — [A7: Manager Rejected](version-a-durable-functions/screenshots/A7-manager-rejected.png) | Pass — [B6: Manager-Rejected Run](version-b-logic-apps/screenshots/B6-manager-rejected-run.png) |
+| Approval timeout | Pass — [A9: Timeout Escalated](version-a-durable-functions/screenshots/A9-timeout-escalated.png) | Pass — [B7: Timeout-Escalated Run](version-b-logic-apps/screenshots/B7-timeout-escalated-run.png) |
+| Missing required fields | Pass — [A11: Missing Fields](version-a-durable-functions/screenshots/A11-missing-fields.png) | Pass — [B8: Validation Error Run](version-b-logic-apps/screenshots/B8-validation-error-run.png) |
+| Invalid category | Pass — [A12: Invalid Category](version-a-durable-functions/screenshots/A12-invalid-category.png) | Pass — [B8: Validation Error Run](version-b-logic-apps/screenshots/B8-validation-error-run.png) |
 
-| Scenario | Version A | Version B | Evidence |
-|---|---|---|---|
-| Under $100 | Pass | Pass | Version A: `A2-completed-approved.png`; Version B: successful auto-approved Logic App run and employee email |
-| Manager approves | Pass | Pass | Version A: `A5-manager-approved.png`; Version B: successful approval email and approved outcome |
-| Manager rejects | Pass | Pass | Version A: `A7-manager-rejected.png`; Version B: successful rejection email and rejected outcome |
-| No response / timeout | Pass | Pass | Version A: `A9-timeout-escalated.png`; Version B: successful timeout/escalated Logic App run |
-| Missing fields | Pass | Pass | Version A: `A11-missing-fields.png`; Version B: validation error run for missing `description` |
-| Invalid category | Pass | Pass | Version A: `A12-invalid-category.png`; Version B: validation error run for category `luxury` |
+### Additional Version B Evidence
+
+- [B1: Service Bus Resource](version-b-logic-apps/screenshots/B1-servicebus-resource.png)
+- [B2: Service Bus SQL Filters](version-b-logic-apps/screenshots/B2-servicebus-filters.png)
+- [B3: Complete Logic App Designer](version-b-logic-apps/screenshots/B3-complete-logic-app-designe.png)
+- [B9: Employee Result Email](version-b-logic-apps/screenshots/B9-employee-result-email.png)
+- [B10: Topic Subscription Message Counts](version-b-logic-apps/screenshots/B10-topic-counts.png)
 
 ## Comparison Analysis (800–1200 words)
 
@@ -87,6 +93,9 @@ For a production expense approval system, I would choose Durable Functions as th
 I would still keep Service Bus as an optional entry point if the system needed load leveling or integration with other applications. I would also use a managed identity and Key Vault instead of connection strings in production. The email activity should use a production-approved provider and retry policy, and all requests should have a correlation ID.
 
 I would choose Logic Apps instead when the workflow is mainly integration work, the organization already uses Microsoft 365 connectors, and the business process changes often. A visual workflow can help support staff understand a failed run without opening Python code. It is also a strong choice for a smaller number of requests where developer speed is more important than per-action cost. However, for this assignment's approval timer and future custom rules, Durable Functions gives a cleaner Human Interaction pattern and more confidence that complex behaviour can be tested and maintained.
+
+
+[Watch my CST8917 Assignment 2 presentation on YouTube](https://youtu.be/W2BK02jCM0U)
 
 ## References
 
